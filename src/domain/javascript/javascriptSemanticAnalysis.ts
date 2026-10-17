@@ -1208,6 +1208,9 @@ const addBinding = (input: AddBindingInput): void => {
     if (!scope.bindingsComplete) return;
     binding = createBinding(scope, name, kind, mutable);
     scope.bindings.set(name, binding);
+    // Map the definition node to its lexical scope so later resolution starts
+    // from the correct scope and respects shadowing of outer bindings.
+    state.scopeByNode.set(definitionNode, scope);
     state.bindingsById.set(binding.bindingId, binding);
   }
   binding.mutable ||= mutable;
